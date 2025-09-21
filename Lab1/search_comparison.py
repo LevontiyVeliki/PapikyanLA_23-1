@@ -26,7 +26,7 @@ def binary_search(arr, target):
             right = mid - 1 # 0(1) смещаем правую границу
 
     return -1  # Если элемент не найден
-    # 0(log(n)) - средняя скорость алгоритма с отсортированным массивом
+    # O(1) + O(1) + O(1) + O(1) + 0(log(n)) + O(1) = O(log(n)) - средняя скорость алгоритма с отсортированным массивом
     # 0(n log(n)) - средняя скорость алгоритма с сортировкой
 
 # Функция для замера времени выполнения
@@ -39,36 +39,36 @@ def measure_time(func, data, target):
 
 pc_info = """
 Характеристики ПК для тестирования:
-- Процессор: Intel Core i7-12700H @ 2.30GHz
+- Процессор: Intel Core i7-12400H @ 2.70GHz
 - Оперативная память: 16 GB DDR4
-- ОС: Windows 11
+- ОС: Windows 10
 - Python: 3.13.1
 """
 
 print(pc_info)
 
 # Проведение экспериментов
-sizes = [1000, 5000, 10000, 50000, 100000, 500000] # Размеры массивов
-linear_times = [] # Время выполнения для каждого размера linear
-binary_times = [] # Время выполнения для каждого размера binary
+sizes = [1000, 5000, 10000, 50000, 100000, 500000] # Размеры массивов для генерации
+linear_times = [] # Время выполнения для каждого размера линейного поиска
+binary_times = [] # Время выполнения для каждого размера бинарный поиск
 target = 500
 
 print("Замеры времени выполнения для алгоритма суммирования массива:")
 print("{:>3} {:>12} {:>12} {:>15}".format("Алгоритм", "Размер (N)", "Время (мс)", "Время/N (мкс)"))
 # Тестирование
 for size in sizes:
-    # Генерация случайного массива заданного размера
+    # Генерация случайного массива заданного размера элементы значениями до 1000
     data = [random.randint(1, 1000) for _ in range(size)]
     data.sort()
 
-    # Замер времени выполнения (усреднение на 10 запусках)
+    # Замер времени выполнения c усреднением
     execution_time = timeit.timeit(lambda: linear_search(data, target), number=10) * 1000 / 10
 
     linear_times.append(execution_time)
     time_per_element = (execution_time * 1000) / size if size > 0 else 0 # мкс на элемент
     print("Linear: {:>10} {:>12.4f} {:>15.4f}".format(size, execution_time, time_per_element))
 
-    # Замер времени выполнения (усреднение на 10 запусках)
+    # Замер времени выполнения с усреднениями
     execution_time = timeit.timeit(lambda: binary_search(data, target), number=10) * 1000 / 10
 
     binary_times.append(execution_time)
@@ -77,7 +77,7 @@ for size in sizes:
     print("Binary: {:>10} {:>12.4f} {:>15.4f}".format(size, execution_time, time_per_element))
 
 
-# Построение графика
+# Построение графика результатов
 plt.figure(figsize=(14, 6))
 
 # Обычный масштаб
